@@ -8,8 +8,14 @@ function Get-DSExternalTimeStats {
 
         [Parameter()]
         [hashtable]
-        $CategoryPrefixHashtable = $(Import-PowerShellDataFile $PSScriptRoot\config\CategoryPrefixHashtable.psd1)
+        $CategoryPrefixHashtable
     )
+
+    if (-not $CategoryPrefixHashtable) {
+        $ModuleBase = $MyInvocation.MyCommand.Module.ModuleBase
+        $ConfigPath = Join-Path -Path $ModuleBase -ChildPath 'config\CategoryPrefixHashtable.psd1'
+        $CategoryPrefixHashtable = Import-PowerShellDataFile $ConfigPath
+    }
 
     $ExternalTime = Get-DSExternalTime -CategoryPrefixHashtable $CategoryPrefixHashtable
 

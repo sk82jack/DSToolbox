@@ -8,8 +8,7 @@ function Update-DSExternalTimeDescription {
         [Parameter(ParameterSetName = 'Category', Mandatory)]
         [ArgumentCompleter( {
                 param ($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
-
-                $CategoryPrefixHashtable = Import-PowerShellDataFile $PSScriptRoot\config\CategoryPrefixHashtable.psd1
+                $CategoryPrefixHashtable = Import-PowerShellDataFile $PSScriptRoot\..\config\CategoryPrefixHashtable.psd1
 
                 $CategoryPrefixHashtable.Values | Where-Object { $_ -match "^$WordToComplete" }
             }
@@ -32,12 +31,18 @@ function Update-DSExternalTimeDescription {
 
         [Parameter(ParameterSetName = 'Category')]
         [hashtable]
-        $CategoryPrefixHashtable = $(Import-PowerShellDataFile $PSScriptRoot\config\CategoryPrefixHashtable.psd1),
+        $CategoryPrefixHashtable,
 
         [Parameter()]
         [string]
         $AuthToken = (Get-Content .\authtoken.txt -ErrorAction SilentlyContinue)
     )
+
+    if (-not $CategoryPrefixHashtable) {
+        $ModuleBase = $MyInvocation.MyCommand.Module.ModuleBase
+        $ConfigPath = Join-Path -Path $ModuleBase -ChildPath 'config\CategoryPrefixHashtable.psd1'
+        $CategoryPrefixHashtable = Import-PowerShellDataFile $ConfigPath
+    }
 
     $Headers = @{
         'Accept-Encoding' = 'gzip'

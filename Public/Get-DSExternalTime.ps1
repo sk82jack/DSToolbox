@@ -3,12 +3,18 @@ function Get-DSExternalTime {
     param (
         [Parameter()]
         [hashtable]
-        $CategoryPrefixHashtable = $(Import-PowerShellDataFile $PSScriptRoot\config\CategoryPrefixHashtable.psd1),
+        $CategoryPrefixHashtable,
 
         [Parameter()]
         [string]
         $AuthToken = (Get-Content .\authtoken.txt -ErrorAction SilentlyContinue)
     )
+
+    if (-not $CategoryPrefixHashtable) {
+        $ModuleBase = $MyInvocation.MyCommand.Module.ModuleBase
+        $ConfigPath = Join-Path -Path $ModuleBase -ChildPath 'config\CategoryPrefixHashtable.psd1'
+        $CategoryPrefixHashtable = Import-PowerShellDataFile $ConfigPath
+    }
 
     $Headers = @{
         'Accept-Encoding' = 'gzip'
