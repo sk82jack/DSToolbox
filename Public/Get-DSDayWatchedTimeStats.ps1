@@ -14,7 +14,7 @@ function Get-DSDayWatchedTimeStats {
         )]
         [ValidateScript({
                 $Names = [cultureinfo]::InvariantCulture.DateTimeFormat.AbbreviatedMonthNames | Where-Object { $_ -match "\w+" }
-                if ($Names -contains $_) {
+                if ((-not $_) -or ($Names -contains $_)) {
                     $True
                 }
                 else {
@@ -44,6 +44,15 @@ function Get-DSDayWatchedTimeStats {
     }
 
     $DayWatchedTime = Get-DSDayWatchedTime @DayWatchedSplat
+
+    if (-not $DateFrom) {
+        $DateFrom = $DayWatchedTime[0].Date
+    }
+
+    if (-not $DateTo) {
+        $DateTo = $DayWatchedTime[-1].Date
+    }
+
     if ($GroupByMonth) {
         $GroupedTime = $DayWatchedTime | Group-Object -Property { [cultureinfo]::InvariantCulture.DateTimeFormat.GetAbbreviatedMonthName($_.Date.Month), $_.Date.Year -join ' ' }
         $GroupedTime = $GroupedTime | Sort-Object { $_.Name.split()[1] }, { [cultureinfo]::InvariantCulture.DateTimeFormat.AbbreviatedMonthNames.IndexOf($_.Name.split()[0]) }
