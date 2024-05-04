@@ -43,7 +43,7 @@ function Get-DSDayWatchedTimeStats {
         $DayWatchedSplat.Remove('GroupByMonth')
     }
 
-    $DayWatchedTime = . $PSScriptRoot\Get-DSDayWatchedTime.ps1 @DayWatchedSplat
+    $DayWatchedTime = Get-DSDayWatchedTime @DayWatchedSplat
     if ($GroupByMonth) {
         $GroupedTime = $DayWatchedTime | Group-Object -Property { [cultureinfo]::InvariantCulture.DateTimeFormat.GetAbbreviatedMonthName($_.Date.Month), $_.Date.Year -join ' ' }
         $GroupedTime = $GroupedTime | Sort-Object { $_.Name.split()[1] }, { [cultureinfo]::InvariantCulture.DateTimeFormat.AbbreviatedMonthNames.IndexOf($_.Name.split()[0]) }

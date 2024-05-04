@@ -14,7 +14,7 @@ function Export-DSDayWatchedTime {
         $ExportToClipboard
     )
 
-    $DayWatchedTime = . $PSScriptRoot\Get-DSDayWatchedTime.ps1
+    $DayWatchedTime = Get-DSDayWatchedTime
 
     $ExportDirectory = Split-Path -Path $Path -Parent
     if (-not (Test-Path $ExportDirectory)) {

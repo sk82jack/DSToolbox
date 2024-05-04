@@ -14,7 +14,7 @@ function Export-DSExternalTime {
         $ExportToClipboard
     )
 
-    $ExternalTime = . $PSScriptRoot\Get-DSExternalTime.ps1
+    $ExternalTime = Get-DSExternalTime
 
     $ExportDirectory = Split-Path -Path $Path -Parent
     if (-not (Test-Path $ExportDirectory)) {

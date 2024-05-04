@@ -11,7 +11,7 @@ function Get-DSExternalTimeStats {
         $CategoryPrefixHashtable = $(Import-PowerShellDataFile $PSScriptRoot\config\CategoryPrefixHashtable.psd1)
     )
 
-    $ExternalTime = . $PSScriptRoot\Get-DSExternalTime.ps1 -CategoryPrefixHashtable $CategoryPrefixHashtable
+    $ExternalTime = Get-DSExternalTime -CategoryPrefixHashtable $CategoryPrefixHashtable
 
 
     $GroupedOutput = $ExternalTime | Group-Object -Property $GroupedBy
