@@ -1,7 +1,7 @@
 function Get-DSDayWatchedTime {
     [CmdletBinding(DefaultParameterSetName = 'DateRange')]
     param (
-        [Parameter(ParameterSetName = 'Month')]
+        [Parameter(ParameterSetName = 'Month', Mandatory)]
         [ArgumentCompleter( {
                 param ($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
 
@@ -19,6 +19,7 @@ function Get-DSDayWatchedTime {
                 }
             }
         )]
+        [string]
         $Month,
 
         [Parameter(ParameterSetName = 'Month')]

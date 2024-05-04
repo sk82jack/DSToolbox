@@ -5,7 +5,7 @@ function Get-DSDayWatchedTimeStats {
         [switch]
         $GroupByMonth,
 
-        [Parameter(ParameterSetName = 'Month')]
+        [Parameter(ParameterSetName = 'Month', Mandatory)]
         [ArgumentCompleter( {
                 param ($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
 
@@ -14,7 +14,7 @@ function Get-DSDayWatchedTimeStats {
         )]
         [ValidateScript({
                 $Names = [cultureinfo]::InvariantCulture.DateTimeFormat.AbbreviatedMonthNames | Where-Object { $_ -match "\w+" }
-                if ((-not $_) -or ($Names -contains $_)) {
+                if ($Names -contains $_) {
                     $True
                 }
                 else {
@@ -23,6 +23,7 @@ function Get-DSDayWatchedTimeStats {
                 }
             }
         )]
+        [string]
         $Month,
 
         [Parameter(ParameterSetName = 'Month')]
