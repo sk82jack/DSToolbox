@@ -1,6 +1,10 @@
 function Export-DSDayWatchedTime {
     [CmdletBinding(DefaultParameterSetName = 'clipboard')]
     param (
+        [Parameter()]
+        [switch]
+        $Monthly,
+
         [Parameter(ParameterSetName = 'csv')]
         [switch]
         $ExportToCsv,
@@ -14,14 +18,19 @@ function Export-DSDayWatchedTime {
         $ExportToClipboard
     )
 
-    $DayWatchedTime = Get-DSDayWatchedTime
-
     $ExportDirectory = Split-Path -Path $Path -Parent
     if (-not (Test-Path $ExportDirectory)) {
         $null = New-Item -Path $ExportDirectory -ItemType Directory
     }
 
-    $ExportArray = $DayWatchedTime.foreach{ $_.Date = $_.Date.ToString('d'); $_ }
+    if ($Monthly) {
+        $ExportArray = Get-DSDayWatchedTimeStats -GroupByMonth
+    }
+    else {
+        $DayWatchedTime = Get-DSDayWatchedTime
+        $ExportArray = $DayWatchedTime.foreach{ $_.Date = $_.Date.ToString('d'); $_ }
+    }
+
     if ($PSCmdlet.ParameterSetName -eq 'csv') {
         $ExportArray | Export-Csv -Path $Path -NoTypeInformation
     }
