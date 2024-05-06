@@ -41,7 +41,7 @@ function Get-DSDayWatchedTimeStats {
 
     $DayWatchedSplat = $PSBoundParameters
     if ($DayWatchedSplat.ContainsKey('GroupByMonth')) {
-        $DayWatchedSplat.Remove('GroupByMonth')
+        $DayWatchedSplat.Remove('GroupByMonth') | Out-Null
     }
 
     $DayWatchedTime = Get-DSDayWatchedTime @DayWatchedSplat
