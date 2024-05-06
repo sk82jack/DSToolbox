@@ -23,12 +23,15 @@ function Export-DSDayWatchedTime {
         $null = New-Item -Path $ExportDirectory -ItemType Directory
     }
 
+    $Today = Get-Date
     if ($Monthly) {
-        $ExportArray = Get-DSDayWatchedTimeStats -GroupByMonth
+        $DayWatchedTimeStats = Get-DSDayWatchedTimeStats -GroupByMonth
+        $CurrentMonth = [cultureinfo]::InvariantCulture.DateTimeFormat.GetAbbreviatedMonthName($Today.Month)
+        $ExportArray = $DayWatchedTimeStats.Where{ $_.Month -notmatch $CurrentMonth }
     }
     else {
         $DayWatchedTime = Get-DSDayWatchedTime
-        $ExportArray = $DayWatchedTime.foreach{ $_.Date = $_.Date.ToString('d'); $_ }
+        $ExportArray = $DayWatchedTime.Where{ $_.Date.Date -ne $Today.Date }.foreach{ $_.Date = $_.Date.ToString('d'); $_ }
     }
 
     if ($PSCmdlet.ParameterSetName -eq 'csv') {
