@@ -1,6 +1,11 @@
 function Export-DSExternalTime {
     [CmdletBinding(DefaultParameterSetName = 'clipboard')]
     param (
+        [Parameter()]
+        [ValidateSet('Category', 'Description', 'FullDescription')]
+        [string]
+        $GroupedBy = 'FullDescription',
+
         [Parameter(ParameterSetName = 'csv')]
         [switch]
         $ExportToCsv,
@@ -14,14 +19,20 @@ function Export-DSExternalTime {
         $ExportToClipboard
     )
 
-    $ExternalTime = Get-DSExternalTime
-
     $ExportDirectory = Split-Path -Path $Path -Parent
     if (-not (Test-Path $ExportDirectory)) {
         $null = New-Item -Path $ExportDirectory -ItemType Directory
     }
 
-    $ExportArray = $ExternalTime.foreach{ $_.Date = $_.Date.ToString('d'); $_ }
+    if ($GroupedBy) {
+        $ExternalTimeStats = Get-DSExternalTimeStats -GroupedBy $GroupedBy
+        $ExportArray = $ExternalTimeStats
+    }
+    else {
+        $ExternalTime = Get-DSExternalTime
+        $ExportArray = $ExternalTime.foreach{ $_.Date = $_.Date.ToString('d'); $_ }
+    }
+
     if ($PSCmdlet.ParameterSetName -eq 'csv') {
         $ExportArray | Export-Csv -Path $Path -NoTypeInformation
     }
