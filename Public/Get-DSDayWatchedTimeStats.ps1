@@ -58,17 +58,20 @@ function Get-DSDayWatchedTimeStats {
         $GroupedTime = $DayWatchedTime | Group-Object -Property { [cultureinfo]::InvariantCulture.DateTimeFormat.GetAbbreviatedMonthName($_.Date.Month), $_.Date.Year -join ' ' }
         $GroupedTime = $GroupedTime | Sort-Object { $_.Name.split()[1] }, { [cultureinfo]::InvariantCulture.DateTimeFormat.AbbreviatedMonthNames.IndexOf($_.Name.split()[0]) }
 
+        $CumulativeSeconds = 0
         foreach ($Group in $GroupedTime) {
             $WatchedStats = $Group.Group.DaySecs | Measure-Object -Sum -Average -Maximum -Minimum
             $GoalReachedDays = $Group.Group.Where{ $_.GoalReached }
+            $CumulativeSeconds = $CumulativeSeconds + $WatchedStats.Sum
 
             [pscustomobject]@{
-                Month              = $Group.Name
-                TotalWatchedHours  = [math]::Round(($WatchedStats.Sum / 3600), 1)
-                AverageHoursPerDay = [math]::Round(($WatchedStats.Average / (60 * 60)), 1)
-                MaximumHoursPerDay = [math]::Round(($WatchedStats.Maximum / (60 * 60)), 1)
-                MinimumHoursPerDay = [math]::Round(($WatchedStats.Minimum / (60 * 60)), 1)
-                GoalReachedPercent = [int][math]::Round(($GoalReachedDays.Count / $Group.Group.Count) * 100)
+                Month                  = $Group.Name
+                TotalWatchedHours      = [math]::Round(($WatchedStats.Sum / (60 * 60)), 1)
+                CumulativeWatchedHours = [math]::Round(($CumulativeSeconds / (60 * 60)), 1)
+                AverageHoursPerDay     = [math]::Round(($WatchedStats.Average / (60 * 60)), 1)
+                MaximumHoursPerDay     = [math]::Round(($WatchedStats.Maximum / (60 * 60)), 1)
+                MinimumHoursPerDay     = [math]::Round(($WatchedStats.Minimum / (60 * 60)), 1)
+                GoalReachedPercent     = [int][math]::Round(($GoalReachedDays.Count / $Group.Group.Count) * 100)
             }
         }
     }
@@ -78,7 +81,7 @@ function Get-DSDayWatchedTimeStats {
 
         [pscustomobject]@{
             TimePeriod         = 'From {0:d} to {1:d}' -f $DateFrom, $DateTo
-            TotalWatchedHours  = [math]::Round(($WatchedStats.Sum / 3600), 1)
+            TotalWatchedHours  = [math]::Round(($WatchedStats.Sum / (60 * 60)), 1)
             AverageHoursPerDay = [math]::Round(($WatchedStats.Average / (60 * 60)), 1)
             MaximumHoursPerDay = [math]::Round(($WatchedStats.Maximum / (60 * 60)), 1)
             MinimumHoursPerDay = [math]::Round(($WatchedStats.Minimum / (60 * 60)), 1)
