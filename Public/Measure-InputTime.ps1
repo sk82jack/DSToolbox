@@ -11,9 +11,16 @@ function Measure-InputTime {
     )
 
     $SecondsList = foreach ($IndividualTime in $Time) {
+        $IndividualTime, $IndividualPercent = $IndividualTime -split '[@]'
         $IndividualTimeArray = $IndividualTime -split '[.:]'
         $IndividualTimeSpan = New-TimeSpan -Minutes $IndividualTimeArray[0] -Seconds ($IndividualTimeArray[1] -as [int])
-        $IndividualTimeSpan.TotalSeconds
+
+        if ($IndividualPercent) {
+            $IndividualTimeSpan.TotalSeconds * ([int]$IndividualPercent / 100)
+        }
+        else {
+            $IndividualTimeSpan.TotalSeconds
+        }
     }
 
     $TotalSeconds = ($SecondsList | Measure-Object -Sum).Sum
