@@ -7,7 +7,11 @@ function Measure-InputTime {
 
         [Parameter()]
         [int]
-        $Percent
+        $Percent,
+
+        [Parameter()]
+        [float]
+        $Speed
     )
 
     $SecondsList = foreach ($IndividualTime in $Time) {
@@ -30,6 +34,11 @@ function Measure-InputTime {
         $PercentSeconds = ($TotalSeconds * $Percent) / 100
         $PercentTimeSpan = New-TimeSpan -Seconds $PercentSeconds
         'Total time: {0:g} ({1}% of {2:g})' -f $PercentTimeSpan, $Percent, $TotalTimeSpan
+    }
+    elseif ($Speed -gt 0) {
+        $PercentSeconds = ($TotalSeconds / $Speed)
+        $SpeedTimeSpan = New-TimeSpan -Seconds $PercentSeconds
+        'Total time: {0:g} ({1:g} at x{2})' -f $SpeedTimeSpan, $TotalTimeSpan, $Speed
     }
     else {
         'Total time: {0:g}' -f $TotalTimeSpan
