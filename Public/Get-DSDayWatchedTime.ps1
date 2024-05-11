@@ -61,7 +61,12 @@ function Get-DSDayWatchedTime {
 
     $Now = Get-Date
     if (-not $DateTo -or $DateTo -gt $Now) {
-        $DateTo = $Now
+        if ($Now.Hour -lt 4) {
+            $DateTo = $Now.AddDays(-1)
+        }
+        else {
+            $DateTo = $Now
+        }
     }
 
     $TimeSpan = New-TimeSpan -Start $DateFrom -End $DateTo
