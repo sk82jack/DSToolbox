@@ -6,4 +6,5 @@
     'TW' = 'Twitch'
     'CT' = 'Crosstalk'
     'IG' = 'Instagram'
+    'SP' = 'Speaking'
 }
