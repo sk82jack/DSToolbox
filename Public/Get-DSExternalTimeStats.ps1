@@ -4,7 +4,7 @@ function Get-DSExternalTimeStats {
         [Parameter()]
         [ValidateSet('Category', 'Description', 'FullDescription')]
         [string]
-        $GroupedBy = 'FullDescription',
+        $GroupedBy = 'Description',
 
         [Parameter()]
         [hashtable]
