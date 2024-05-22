@@ -7,7 +7,7 @@ function Get-DSExternalTime {
 
         [Parameter()]
         [string]
-        $AuthToken = (Get-Content .\authtoken.txt -ErrorAction SilentlyContinue)
+        $AuthToken = (Get-Content .\ds-authtoken.txt -ErrorAction SilentlyContinue)
     )
 
     if (-not $CategoryPrefixHashtable) {

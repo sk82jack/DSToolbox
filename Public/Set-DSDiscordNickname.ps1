@@ -10,7 +10,7 @@ function Set-DSDiscordNickname {
 
         [Parameter()]
         [string]
-        $DSAuthToken = (Get-Content .\authtoken.txt -ErrorAction SilentlyContinue),
+        $DSAuthToken = (Get-Content .\ds-authtoken.txt -ErrorAction SilentlyContinue),
 
         [Parameter()]
         [string]

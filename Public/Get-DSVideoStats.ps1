@@ -31,7 +31,7 @@ function Get-DSVideoStats {
 
         [Parameter()]
         [string]
-        $AuthToken = (Get-Content .\authtoken.txt -ErrorAction SilentlyContinue)
+        $AuthToken = (Get-Content .\ds-authtoken.txt -ErrorAction SilentlyContinue)
     )
 
     $GuidesPerDialect = Import-PowerShellDataFile $PSScriptRoot\config\GuidesPerDialect.psd1

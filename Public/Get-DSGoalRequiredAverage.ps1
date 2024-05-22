@@ -21,7 +21,7 @@ function Get-DSGoalRequiredAverage {
 
         [Parameter()]
         [string]
-        $AuthToken = (Get-Content .\authtoken.txt -ErrorAction SilentlyContinue)
+        $AuthToken = (Get-Content .\ds-authtoken.txt -ErrorAction SilentlyContinue)
     )
 
     $StartDate = Get-Date -Hour 0 -Minute 0 -Second 0
