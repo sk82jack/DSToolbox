@@ -44,7 +44,7 @@ function Get-DSDayWatchedTime {
     )
 
     $Headers = @{
-        'Accept-Encoding' = 'gzip'
+        'Accept-Encoding' = 'gzip, deflate, br, zstd'
         'authorization'   = 'Bearer {0}' -f $AuthToken
     }
     $DayWatchedTime = Invoke-RestMethod -UseBasicParsing -Uri "https://www.dreamingspanish.com/.netlify/functions/dayWatchedTime" -Headers $Headers

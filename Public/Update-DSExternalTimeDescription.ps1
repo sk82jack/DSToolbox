@@ -45,7 +45,7 @@ function Update-DSExternalTimeDescription {
     }
 
     $Headers = @{
-        'Accept-Encoding' = 'gzip'
+        'Accept-Encoding' = 'gzip, deflate, br, zstd'
         'authorization'   = 'Bearer {0}' -f $AuthToken
     }
     $ExternalTime = (Invoke-RestMethod -UseBasicParsing -Uri "https://www.dreamingspanish.com/.netlify/functions/externalTime" -Headers $Headers).externalTimes.Where{ $_.type -ne 'initial' }

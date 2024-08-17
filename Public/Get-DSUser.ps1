@@ -7,7 +7,7 @@ function Get-DSUser {
     )
 
     $Headers = @{
-        'Accept-Encoding' = 'gzip'
+        'Accept-Encoding' = 'gzip, deflate, br, zstd'
         'authorization'   = 'Bearer {0}' -f $AuthToken
     }
     $User = Invoke-RestMethod -UseBasicParsing -Uri "https://www.dreamingspanish.com/.netlify/functions/user" -Headers $Headers

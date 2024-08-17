@@ -9,7 +9,7 @@ function Confirm-GuidesPerDialect {
     $GuidesPerDialect = Import-PowerShellDataFile .\Config\GuidesPerDialect.psd1
 
     $Headers = @{
-        'Accept-Encoding' = 'gzip'
+        'Accept-Encoding' = 'gzip, deflate, br, zstd'
         'authorization'   = 'Bearer {0}' -f $AuthToken
     }
     $Response = (Invoke-RestMethod -UseBasicParsing -Uri "https://www.dreamingspanish.com/.netlify/functions/videos" -Headers $Headers).Videos
