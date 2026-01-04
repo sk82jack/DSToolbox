@@ -20,8 +20,13 @@ function Get-DSExternalTime {
         'Accept-Encoding' = 'gzip, deflate, br, zstd'
         'authorization'   = 'Bearer {0}' -f $AuthToken
     }
-    $DayWatchedTime = Invoke-RestMethod -UseBasicParsing -Uri "https://www.dreamingspanish.com/.netlify/functions/dayWatchedTime" -Headers $Headers
-    $ExternalTime = Invoke-RestMethod -UseBasicParsing -Uri "https://www.dreamingspanish.com/.netlify/functions/externalTime" -Headers $Headers
+    try {
+        $DayWatchedTime = Invoke-RestMethod -UseBasicParsing -Uri "https://www.dreamingspanish.com/.netlify/functions/dayWatchedTime" -Headers $Headers
+        $ExternalTime = Invoke-RestMethod -UseBasicParsing -Uri "https://www.dreamingspanish.com/.netlify/functions/externalTime" -Headers $Headers
+    }
+    catch {
+        throw $_
+    }
 
     $TimeSpan = New-TimeSpan -Start $DayWatchedTime[0].date -End (Get-Date)
     $AllDays = foreach ($DayNumber in 0..$TimeSpan.Days) {
